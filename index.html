@@ -2,32 +2,51 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Service Marketplace</title>
+  <title>Home Service Hub</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f5f7fa;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
     }
     header {
       background: #0f172a;
       color: white;
       padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+    }
+    nav a {
+      color: white;
+      margin-left: 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .hero {
+      padding: 60px 20px;
       text-align: center;
+      background: #2563eb;
+      color: white;
+    }
+    .hero h2 {
+      font-size: 36px;
     }
     .services {
+      padding: 40px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
-      padding: 30px;
     }
     .card {
       background: white;
-      padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       text-align: center;
     }
     .card button {
@@ -37,38 +56,58 @@
       padding: 10px 15px;
       border-radius: 5px;
       cursor: pointer;
+      margin-top: 10px;
+    }
+    footer {
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 15px;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Home Service Marketplace</h1>
-  <p>Book trusted repair services near you</p>
+  <h1>Home Service Hub</h1>
+  <nav>
+    <a href="#">Customer</a>
+    <a href="#">Service Agent</a>
+    <a href="#">Admin</a>
+  </nav>
 </header>
+
+<section class="hero">
+  <h2>Book Trusted Home Services</h2>
+  <p>AC Repair • Bike Repair • Car Repair • Appliance Services</p>
+</section>
 
 <section class="services">
   <div class="card">
     <h3>AC Repair</h3>
-    <p>Expert AC technicians</p>
-    <button>Book Now</button>
+    <p>Expert technicians at your doorstep</p>
+    <button>Book Service</button>
   </div>
   <div class="card">
     <h3>Bike Repair</h3>
-    <p>Fast bike servicing</p>
-    <button>Book Now</button>
+    <p>Quick & affordable bike servicing</p>
+    <button>Book Service</button>
   </div>
   <div class="card">
     <h3>Car Repair</h3>
     <p>Professional car mechanics</p>
-    <button>Book Now</button>
+    <button>Book Service</button>
   </div>
   <div class="card">
     <h3>Home Appliances</h3>
-    <p>Washing machine, fridge & more</p>
-    <button>Book Now</button>
+    <p>Fridge, washing machine & more</p>
+    <button>Book Service</button>
   </div>
 </section>
+
+<footer>
+  © 2025 Home Service Hub. All rights reserved.
+</footer>
 
 </body>
 </html>
