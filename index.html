@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Service Marketplace</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f7fa;
+    }
+    header {
+      background: #0f172a;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 30px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .card button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Home Service Marketplace</h1>
+  <p>Book trusted repair services near you</p>
+</header>
+
+<section class="services">
+  <div class="card">
+    <h3>AC Repair</h3>
+    <p>Expert AC technicians</p>
+    <button>Book Now</button>
+  </div>
+  <div class="card">
+    <h3>Bike Repair</h3>
+    <p>Fast bike servicing</p>
+    <button>Book Now</button>
+  </div>
+  <div class="card">
+    <h3>Car Repair</h3>
+    <p>Professional car mechanics</p>
+    <button>Book Now</button>
+  </div>
+  <div class="card">
+    <h3>Home Appliances</h3>
+    <p>Washing machine, fridge & more</p>
+    <button>Book Now</button>
+  </div>
+</section>
+
+</body>
+</html>
