@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Customer Dashboard - Home Service Hub</title>
   <meta charset="UTF-8" />
+  <title>Customer Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-<h2>Book a Service</h2>
+<h1>Customer Dashboard</h1>
+<p>Book a service below</p>
 
+<label>Service</label><br>
 <select id="service">
   <option value="AC Repair">AC Repair</option>
   <option value="Bike Repair">Bike Repair</option>
@@ -17,15 +19,20 @@
 </select>
 <br><br>
 
-<input id="address" placeholder="Enter your address" />
+<label>Address</label><br>
+<input type="text" id="address" placeholder="Enter your address" />
 <br><br>
 
-<textarea id="description" placeholder="Describe your problem"></textarea>
+<label>Description</label><br>
+<textarea id="description" placeholder="Describe the problem"></textarea>
 <br><br>
 
 <button id="bookBtn">Submit Request</button>
 
 <p id="msg"></p>
+
+<br>
+<a href="/">⬅ Back to Home</a>
 
 <script>
   const SUPABASE_URL = "https://ocfsqttrzbtxsismdeca.supabase.co";
@@ -51,13 +58,9 @@
     }
 
     const customerId = session.session.user.id;
-
-    const service =
-      document.getElementById("service").value;
-    const address =
-      document.getElementById("address").value;
-    const description =
-      document.getElementById("description").value;
+    const service = document.getElementById("service").value;
+    const address = document.getElementById("address").value;
+    const description = document.getElementById("description").value;
 
     const { error } = await supabaseClient
       .from("service_requests")
@@ -75,7 +78,7 @@
     }
 
     document.getElementById("msg").innerText =
-      "Service request submitted successfully!";
+      "✅ Service request submitted successfully!";
   }
 </script>
 
