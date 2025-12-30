@@ -34,7 +34,11 @@
     }
   </style>
 </head>
+
 <body>
+
+<!-- 🔴 DEPLOYMENT TEST LINE -->
+<h2 style="color:red">NEW AGENT VERSION</h2>
 
 <h1>Service Agent Dashboard</h1>
 <p>Pending service requests</p>
@@ -46,7 +50,7 @@
 <script>
   const supabase = supabaseJs.createClient(
     "https://ocfsqttrzbtxsismdeca.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZnNxdHRyemJ0eHNpc21kZWNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcwMjk5NTksImV4cCI6MjA4MjYwNTk1OX0.8_mBbt8fAlKazpqGeaJ4kvKaAPeZ4m-Vy6rxL3CYIJU"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZnNx dHRyemJ0eHNpc21kZWNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcwMjk5NTksImV4cCI6MjA4MjYwNTk1OX0.8_mBbt8fAlKazpqGeaJ4kvKaAPeZ4m-Vy6rxL3CYIJU"
   );
 
   async function loadJobs() {
@@ -65,7 +69,7 @@
       return;
     }
 
-    if (data.length === 0) {
+    if (!data || data.length === 0) {
       jobsDiv.innerHTML = "No pending jobs";
       return;
     }
@@ -74,7 +78,7 @@
       const div = document.createElement("div");
       div.className = "job";
       div.innerHTML = `
-        <strong>Service:</strong> ${job.service}<br>
+        <strong>Service:</strong> ${job.services}<br>
         <strong>Address:</strong> ${job.address}<br>
         <strong>Description:</strong> ${job.description}<br>
         <button onclick="acceptJob('${job.id}')">Accept Job</button>
