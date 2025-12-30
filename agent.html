@@ -1,18 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Service Agent - Home Service Hub</title>
+  <title>Agent Dashboard</title>
+  <meta charset="UTF-8" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <h1>Service Agent Dashboard</h1>
-  <p>Accept jobs and update service status.</p>
 
-  <ul>
-    <li>Pending Jobs</li>
-    <li>Accepted Jobs</li>
-    <li>Completed Jobs</li>
-  </ul>
+<h1>Agent Dashboard</h1>
+<p>Available Service Requests</p>
 
-  <a href="index.html">⬅ Back to Home</a>
+<div id="requests"></div>
+
+<script>
+  const SUPABASE_URL = "https://ocfsqttrzbtxsismdeca.supabase.co";
+  const SUPABASE_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZnNxdHRyemJ0eHNpc21kZWNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcwMjk5NTksImV4cCI6MjA4MjYwNTk1OX0.8_mBbt8fAlKazpqGeaJ4kvKaAPeZ4m-Vy6rxL3CYIJU";
+
+  const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  loadRequests();
+
+  async function loadRequests() {
+    const { data, error } = await supabaseClient
+      .from("service_requests")
+      .select("*")
+      .eq("status", "pending");
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    const container = document.getElementById("requests");
+    container.innerHTML = "";
+
+    data.forEach((req) => {
+      const div = document.createElement("div");
+      div.style.border = "1px solid #ccc";
+      div.style.padding = "10px";
+      div.style.margin = "10px";
+
+      div.innerHTML = `
+        <b>Service:</b> ${req.service}<br>
+        <b>Address:</b> ${req.address}<br>
+        <b>Description:</b> ${req.description}<br>
+        <button onclick="acceptJob('${req.id}')">Accept Job</button>
+      `;
+
+      container.appendChild(div);
+    });
+  }
+
+  async function acceptJob(id) {
+    const { error } = await supabaseClient
+      .from("service_requests")
+      .update({ status: "accepted" })
+      .eq("id", id);
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    alert("Job accepted!");
+    loadRequests();
+  }
+</script>
+
 </body>
 </html>
