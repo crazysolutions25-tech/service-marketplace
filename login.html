@@ -2,47 +2,77 @@
 <html>
 <head>
   <title>Login - Home Service Hub</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <meta charset="UTF-8" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <h2>Login</h2>
 
-  <input id="email" placeholder="Email" /><br><br>
-  <input id="password" type="password" placeholder="Password" /><br><br>
+<h2>Login</h2>
 
-  <select id="role">
-    <option value="customer">Customer</option>
-    <option value="agent">Service Agent</option>
-    <option value="admin">Admin</option>
-  </select><br><br>
+<input id="email" type="email" placeholder="Email" /><br><br>
+<input id="password" type="password" placeholder="Password" /><br><br>
 
-  <button onclick="login()">Login</button>
+<button id="loginBtn">Login</button>
+<br><br>
+<a href="/signup.html">Create new account</a>
 
-  <script>
-    const SUPABASE_URL = "sb_publishable_U-qEOVXEZayHy9S-IreU_A_uW5Zm48O";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZnNxdHRyemJ0eHNpc21kZWNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcwMjk5NTksImV4cCI6MjA4MjYwNTk1OX0.8_mBbt8fAlKazpqGeaJ4kvKaAPeZ4m-Vy6rxL3CYIJU";
+<p id="status"></p>
 
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+<script>
+  const SUPABASE_URL = "https://ocfsqttrzbtxsismdeca.supabase.co";
+  const SUPABASE_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZnNxdHRyemJ0eHNpc21kZWNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcwMjk5NTksImV4cCI6MjA4MjYwNTk1OX0.8_mBbt8fAlKazpqGeaJ4kvKaAPeZ4m-Vy6rxL3CYIJU";
 
-    async function login() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const role = document.getElementById("role").value;
+  const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
-      const { error } = await supabase.auth.signInWithPassword({
+  document
+    .getElementById("loginBtn")
+    .addEventListener("click", login);
+
+  async function login() {
+    document.getElementById("status").innerText =
+      "Logging in...";
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
         email,
         password
       });
 
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      if (role === "customer") window.location.href = "/customer.html";
-      if (role === "agent") window.location.href = "/agent.html";
-      if (role === "admin") window.location.href = "/admin.html";
+    if (error) {
+      alert(error.message);
+      return;
     }
-  </script>
+
+    const userId = data.user.id;
+
+    const { data: profile, error: profileError } =
+      await supabaseClient
+        .from("profiles")
+        .select("role")
+        .eq("id", userId)
+        .single();
+
+    if (profileError) {
+      alert("Profile error");
+      return;
+    }
+
+    if (profile.role === "customer") {
+      window.location.href = "/customer.html";
+    } else if (profile.role === "agent") {
+      window.location.href = "/agent.html";
+    } else if (profile.role === "admin") {
+      window.location.href = "/admin.html";
+    }
+  }
+</script>
+
 </body>
 </html>
