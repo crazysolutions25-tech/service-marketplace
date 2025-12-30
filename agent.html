@@ -1,74 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Agent Dashboard</title>
   <meta charset="UTF-8" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <title>Service Agent Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 20px;
+    }
+    h1 {
+      color: #0f172a;
+    }
+    .job {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
 
-<h1>Agent Dashboard</h1>
-<p>Available Service Requests</p>
+<h1>Service Agent Dashboard</h1>
+<p>Pending service requests</p>
 
-<div id="requests"></div>
+<div id="jobs">Loading jobs...</div>
+
+<a href="/index.html">⬅ Back to Home</a>
 
 <script>
-  const SUPABASE_URL = "https://ocfsqttrzbtxsismdeca.supabase.co";
-  const SUPABASE_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZnNxdHRyemJ0eHNpc21kZWNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcwMjk5NTksImV4cCI6MjA4MjYwNTk1OX0.8_mBbt8fAlKazpqGeaJ4kvKaAPeZ4m-Vy6rxL3CYIJU";
-
-  const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
+  const supabase = supabaseJs.createClient(
+    "https://ocfsqttrzbtxsismdeca.supabase.co",
+    "YOUR_ANON_KEY_HERE"
   );
 
-  loadRequests();
-
-  async function loadRequests() {
-    const { data, error } = await supabaseClient
+  async function loadJobs() {
+    const { data, error } = await supabase
       .from("service_requests")
       .select("*")
-      .eq("status", "pending");
+      .eq("status", "pending")
+      .order("created_at", { ascending: false });
+
+    const jobsDiv = document.getElementById("jobs");
+    jobsDiv.innerHTML = "";
 
     if (error) {
-      alert(error.message);
+      jobsDiv.innerHTML = "Error loading jobs";
+      console.error(error);
       return;
     }
 
-    const container = document.getElementById("requests");
-    container.innerHTML = "";
+    if (data.length === 0) {
+      jobsDiv.innerHTML = "No pending jobs";
+      return;
+    }
 
-    data.forEach((req) => {
+    data.forEach(job => {
       const div = document.createElement("div");
-      div.style.border = "1px solid #ccc";
-      div.style.padding = "10px";
-      div.style.margin = "10px";
-
+      div.className = "job";
       div.innerHTML = `
-        <b>Service:</b> ${req.service}<br>
-        <b>Address:</b> ${req.address}<br>
-        <b>Description:</b> ${req.description}<br>
-        <button onclick="acceptJob('${req.id}')">Accept Job</button>
+        <strong>Service:</strong> ${job.service}<br>
+        <strong>Address:</strong> ${job.address}<br>
+        <strong>Description:</strong> ${job.description}<br>
+        <button onclick="acceptJob('${job.id}')">Accept Job</button>
       `;
-
-      container.appendChild(div);
+      jobsDiv.appendChild(div);
     });
   }
 
   async function acceptJob(id) {
-    const { error } = await supabaseClient
+    const { error } = await supabase
       .from("service_requests")
       .update({ status: "accepted" })
       .eq("id", id);
 
     if (error) {
-      alert(error.message);
-      return;
+      alert("Error accepting job");
+      console.error(error);
+    } else {
+      alert("Job accepted!");
+      loadJobs();
     }
-
-    alert("Job accepted!");
-    loadRequests();
   }
+
+  loadJobs();
 </script>
 
 </body>
